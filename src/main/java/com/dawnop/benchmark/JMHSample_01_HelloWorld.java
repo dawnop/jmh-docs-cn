@@ -45,7 +45,7 @@ public class JMHSample_01_HelloWorld {
      * 被 @Benchmark 标注的方法就是要测试的内容。
      * 无需关心它底层是怎样运行的。
      * </p><p>
-     * 阅读 @Benchmark 源码获取完整的语义和限制。
+     * 阅读 {@link Benchmark} 源码获取完整的语义和限制。
      * 方法的名字不重要，只要加上 @Benchmark 注解就行。
      * 一个类中可以有多个标注为 @Benchmark 的方法。
      * </p><p>
