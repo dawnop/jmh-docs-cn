@@ -70,7 +70,7 @@ public class JMHSample_01_HelloWorld {
      * <p>
      *    $ mvn clean install
      * </p><p>
-     *    $ java -jar target/benchmarks.jar JMHSample_01_HelloWorld
+     *    $ java -jar target/benchmarks.jar JMHSample_01
      * </p>
      * </p>
      */
