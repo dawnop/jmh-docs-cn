@@ -27,38 +27,28 @@ public class JMHSample_02_BenchmarkModes {
 
 
     /*
-     * JMH generates lots of synthetic code for the benchmarks for you during
-     * the benchmark compilation. JMH can measure the benchmark methods in lots
-     * of modes. Users may select the default benchmark mode with a special
-     * annotation, or select/override the mode via the runtime options.
+     * JMH 在编译期间生成代码。JMH 可以通过多种 mode 对代码进行基准测试。
+     * 通过 @BenchmarkMode 指定默认的 mode。还可以在 main 函数中显式覆写默认 mode。
      *
-     * With this scenario, we start to measure something useful. Note that our
-     * payload code potentially throws exceptions, and we can just declare them
-     * to be thrown. If the code throws the actual exception, the benchmark
-     * execution will stop with an error.
+     * 执行的方法可能抛出异常，可以显式声明抛出异常。
+     * 一旦真的抛出异常，基准测试将终止。
      *
-     * When you are puzzled with some particular behavior, it usually helps to
-     * look into the generated code. You might see the code is doing not
-     * something you intend it to do. Good experiments always follow up on the
-     * experimental setup, and cross-checking the generated code is an important
-     * part of that follow up.
+     * 当你对本框架的某种 behavior 产生困惑时，看看本框架生成的代码会很有帮助。
+     * 生成的代码可能不是按照你预想的方式在运行。
+     * 建议按照教程的顺序进行，并且记得检查生成的代码。
      *
-     * The generated code for this particular sample is somewhere at
+     * 这个 Java 文件生成的代码的位置是：
      * target/generated-sources/annotations/.../JMHSample_02_BenchmarkModes.java
      */
 
     /**
-     * <p>Throughput: 每单位时间的操作 ops/time</p>
-     *
-     * <p>持续调用标记有{@link Benchmark}的方法，计算所有工作线程的总吞吐量。
-     * 这个模式基于时间，一致运行到迭代时间结束</p>
      * <p>
-     * Mode.Throughput, as stated in its Javadoc, measures the raw throughput by
-     * continuously calling the benchmark method in a time-bound iteration, and
-     * counting how many times we executed the method.
-     * <p>
-     * We are using the special annotation to select the units to measure in,
-     * although you can use the default.
+     * Throughput: 每单位时间的操作 ops/time
+     * </p><p>
+     * {@link Mode#Throughput}：
+     * 持续调用标记有{@link Benchmark}的方法，计算所有工作线程的总吞吐量。
+     * 在一定的时间内反复调用，直至时间耗尽。
+     * </p>
      */
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
@@ -76,10 +66,13 @@ public class JMHSample_02_BenchmarkModes {
      */
 
     /**
-     * <p>Average time: 每次操作的平均时间 time/op</p>
-     *
-     * <p>持续调用标记有{@link Benchmark}的方法，计算调用所有工作线程的平均时间。这个是{@link Mode#Throughput}的倒数，
-     * 采用不同的聚合政策。这个模式基于时间，一直运行到迭代时间结束</p>
+     * <p>
+     * Average time: 每次操作的平均时间 time/op
+     * </p><p>
+     * {@link Mode#AverageTime}：
+     * 持续调用标记有{@link Benchmark}的方法，计算调用所有工作线程的平均时间。
+     * 这个是{@link Mode#Throughput}的倒数，在一定的时间内反复调用，直至时间耗尽。
+     * </p>
      */
     @Benchmark
     @BenchmarkMode(Mode.AverageTime)
@@ -88,27 +81,14 @@ public class JMHSample_02_BenchmarkModes {
         TimeUnit.MILLISECONDS.sleep(100);
     }
 
-    /*
-     * Mode.SampleTime samples the execution time. With this mode, we are
-     * still running the method in a time-bound iteration, but instead of
-     * measuring the total time, we measure the time spent in *some* of
-     * the benchmark method calls.
-     *
-     * This allows us to infer the distributions, percentiles, etc.
-     *
-     * JMH also tries to auto-adjust sampling frequency: if the method
-     * is long enough, you will end up capturing all the samples.
-     */
-
     /**
-     * <p>Sample time: 对每次操作的时间进行采样 Sampling time</p>
-     *
-     * <p>This mode automatically adjusts the sampling
-     * frequency, but may omit some pauses which missed the sampling measurement. </p>
      * <p>
-     * 持续调用标记有{@link Benchmark}的方法，随机采集调用需要的时间。这个模式自动调整采样频率，
-     * 但可能会忽略一些错过采样测量的暂停？？（但是可能会因为测量的暂停遗漏一些采样）
-     * 这个模式基于时间，一直运行到迭代时间结束
+     * Sample time: 对每次操作的时间进行采样 Sampling time
+     * </p><p>
+     * {@link Mode#SampleTime}：
+     * 持续调用标记有{@link Benchmark}的方法，随机采集一部分测试需要的时间。
+     * 可以采集运行时间的分布，百分比等。这个模式自动调整采样频率，但是可能会因为测量的暂停遗漏一些采样。
+     * 在一定的时间内反复调用，直至时间耗尽。
      * </p>
      */
     @Benchmark
@@ -118,27 +98,18 @@ public class JMHSample_02_BenchmarkModes {
         TimeUnit.MILLISECONDS.sleep(100);
     }
 
-    /*
-     * Mode.SingleShotTime measures the single method invocation time. As the Javadoc
-     * suggests, we do only the single benchmark method invocation. The iteration
-     * time is meaningless in this mode: as soon as benchmark method stops, the
-     * iteration is over.
-     *
-     * This mode is useful to do cold startup tests, when you specifically
-     * do not want to call the benchmark method continuously.
-     */
-
     /**
-     * <p>Single shot time: 测量单次操作的时间。</p>
      * <p>
-     * 运行一次{@link Benchmark}的调用，并且测量它的时间。
-     * 这种模式对下面几种情况很有用：当你不想隐藏热身调用时来检测"冷"性能；你想看到调用的进展；你想记录每一个样本。
-     * 这个模式是基于工作的，仅在单次调用{@link Benchmark}时运行。
+     * Single shot time: 测量单次操作的时间。
+     * </p><p>
+     * {@link Mode#SingleShotTime}：
+     * 运行一次{@link Benchmark}方法，并且测量它的时间。
+     * 不进行 warm up（不进行 JIT 优化）
      * </p>
      * 这种模式的注意事项包括:
      * <ul>
      *  <li>通常需要更多的预热/测量迭代</li>
-     *  <li>如果基准测试很小，定时器开销可能很大；如果这是一个问题，切换到{@link Mode#SampleTime} 模式</li>
+     *  <li>如果基准测试很小，框架开销可能很大；如果这是一个问题，切换到{@link Mode#SampleTime} 模式</li>
      * </ul>
      */
     @Benchmark
@@ -148,9 +119,11 @@ public class JMHSample_02_BenchmarkModes {
         TimeUnit.MILLISECONDS.sleep(100);
     }
 
-    /*
-     * We can also ask for multiple benchmark modes at once. All the tests
-     * above can be replaced with just a single test like this:
+    /**
+     * <p>
+     * {@link BenchmarkMode} 可以添加多个参数。
+     * 多个测试，一次完成。
+     * </p>
      */
 
     @Benchmark
@@ -161,10 +134,10 @@ public class JMHSample_02_BenchmarkModes {
     }
 
     /**
-     * Meta-mode: all the benchmark modes.
-     * This is mostly useful for internal JMH testing.
+     * <p>
+     * {@link Benchmark} 一次性完成所有测试。
+     * </p>
      */
-
     @Benchmark
     @BenchmarkMode(Mode.All)
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
