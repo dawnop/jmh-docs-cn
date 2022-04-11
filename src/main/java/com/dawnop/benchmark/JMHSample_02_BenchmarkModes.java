@@ -15,33 +15,6 @@ public class JMHSample_02_BenchmarkModes {
 
 
     /**
-     * JMH 在编译期间生成代码。JMH 可以通过多种 mode 对代码进行基准测试。
-     * 通过 {@link BenchmarkMode} 指定默认的 mode。还可以在 main 函数中显式覆写默认 mode。
-     * <p>
-     * 执行的方法可能抛出异常，可以显式声明抛出异常。
-     * 一旦真的抛出异常，基准测试将终止。
-     * <p>
-     * 当你对本框架的某种 behavior 产生困惑时，看看本框架生成的代码会很有帮助。
-     * 生成的代码可能不是按照你预想的方式在运行。
-     * 建议按照教程的顺序进行，并且记得检查生成的代码。
-     * <p>
-     * 这个 Java 文件生成的代码的位置是：
-     * target/generated-sources/annotations/.../JMHSample_02_BenchmarkModes.java
-     */
-
-    public static void main(String[] args) throws RunnerException {
-        Options options = new OptionsBuilder()
-                .include(JMHSample_02_BenchmarkModes.class.getSimpleName())
-                .exclude(JMHSample_02_BenchmarkModes.class.getSimpleName() + ".measureAll")
-                .exclude(JMHSample_02_BenchmarkModes.class.getSimpleName() + ".measureMultiple")
-                .output("JMHSample_02_BenchmarkModes_result.sampleLog")
-                .forks(1)
-                .build();
-
-        new Runner(options).run();
-    }
-
-    /**
      * Throughput: 每单位时间的操作 ops/time
      * <p>
      * {@link Mode#Throughput}：
@@ -125,5 +98,33 @@ public class JMHSample_02_BenchmarkModes {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void measureAll() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(100);
+    }
+
+
+    /**
+     * JMH 在编译期间生成代码。JMH 可以通过多种 mode 对代码进行基准测试。
+     * 通过 {@link BenchmarkMode} 指定默认的 mode。还可以在 main 函数中显式覆写默认 mode。
+     * <p>
+     * 执行的方法可能抛出异常，可以显式声明抛出异常。
+     * 一旦真的抛出异常，基准测试将终止。
+     * <p>
+     * 当你对本框架的某种 behavior 产生困惑时，看看本框架生成的代码会很有帮助。
+     * 生成的代码可能不是按照你预想的方式在运行。
+     * 建议按照教程的顺序进行，并且记得检查生成的代码。
+     * <p>
+     * 这个 Java 文件生成的代码的位置是：
+     * target/generated-sources/annotations/.../JMHSample_02_BenchmarkModes.java
+     */
+
+    public static void main(String[] args) throws RunnerException {
+        Options opt = new OptionsBuilder()
+                .include(JMHSample_02_BenchmarkModes.class.getSimpleName())
+                .exclude(JMHSample_02_BenchmarkModes.class.getSimpleName() + ".measureAll")
+                .exclude(JMHSample_02_BenchmarkModes.class.getSimpleName() + ".measureMultiple")
+                .output("JMHSample_02_BenchmarkModes_result.sampleLog")
+                .forks(1)
+                .build();
+
+        new Runner(opt).run();
     }
 }
