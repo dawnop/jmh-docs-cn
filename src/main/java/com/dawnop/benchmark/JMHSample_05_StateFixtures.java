@@ -12,22 +12,19 @@ public class JMHSample_05_StateFixtures {
     double x;
 
     /**
-     * Since @State objects are kept around during the lifetime of the
-     * benchmark, it helps to have the methods which do state housekeeping.
-     * These are usual fixture methods, you are probably familiar with them from
-     * JUnit and TestNG.
+     * {@link State} 对象一直存在于基准测试的整个生命周期中，这有助于进行状态管理。
+     * 有种东西叫 fixture 方法，你可能在 JUnit 和 TestNG 中见过它。
      * <p>
-     * Fixture methods make sense only on @State objects, and JMH will fail to
-     * compile the test otherwise.
+     * Fixture 方法只在 State 对象中生效，在其他地方编译会报错。
      * <p>
-     * As with the State, fixture methods are only called by those benchmark
-     * threads which are using the state. That means you can operate in the
-     * thread-local context, and (not) use synchronization as if you are
-     * executing in the context of benchmark thread.
+     * 与 State 一样，fixture 方法仅仅在访问状态的线程中被调用。
+     * 这意味着你可以在 thread-local 环境中做点事情、进行同步，就像在基准测试线程中一样。
      * <p>
-     * Note: fixture methods can also work with static fields, although the
-     * semantics of these operations fall back out of State scope, and obey
-     * usual Java rules (i.e. one static field per class).
+     * fixture 方法同样可以在静态字段上生效，尽管这种行为脱离了状态管理。
+     * 这种情况下遵循基本的 Java 语义（意味着同一个类的所有实例共享静态字段）
+     * <p>
+     * Setup 默认每个 @Benchmark 前执行
+     * TearDown 默认每个 @Benchmark 后执行
      */
 
     @Setup
@@ -35,8 +32,8 @@ public class JMHSample_05_StateFixtures {
         x = Math.PI;
     }
 
-    /*
-     * And, check the benchmark went fine afterwards:
+    /**
+     * 检查静态变量是否更改
      */
 
     @TearDown
@@ -44,10 +41,9 @@ public class JMHSample_05_StateFixtures {
         assert x > Math.PI : "Nothing changed?";
     }
 
-    /*
-     * This method obviously does the right thing, incrementing the field x
-     * in the benchmark state. check() will never fail this way, because
-     * we are always guaranteed to have at least one benchmark call.
+    /**
+     * 这个方法做得对，对 State 对象的字段 x 进行自增操作。
+     * check() 方法将会断言成功，因为 benchmark 至少进行了一次调用。
      */
 
     @Benchmark
@@ -55,10 +51,9 @@ public class JMHSample_05_StateFixtures {
         x++;
     }
 
-    /*
-     * This method, however, will fail the check(), because we deliberately
-     * have the "typo", and increment only the local variable. This should
-     * not pass the check, and JMH will fail the run.
+    /**
+     * 这个方法之后的 check() 断言将会失败，因为自增的是本地变量的 x。
+     * 同时 JMH 会运行失败。
      */
 
     @Benchmark
@@ -66,24 +61,6 @@ public class JMHSample_05_StateFixtures {
         double x = 0;
         x++;
     }
-
-    /*
-     * ============================== HOW TO RUN THIS TEST: ====================================
-     *
-     * You can see measureRight() yields the result, and measureWrong() fires
-     * the assert at the end of the run.
-     *
-     * You can run this test:
-     *
-     * a) Via the command line:
-     *    $ mvn clean install
-     *    $ java -ea -jar target/benchmarks.jar JMHSample_05 -f 1
-     *    (we requested single fork; there are also other options, see -h)
-     *
-     * b) Via the Java API:
-     *    (see the JMH homepage for possible caveats when running from IDE:
-     *      http://openjdk.java.net/projects/code-tools/jmh/)
-     */
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
