@@ -40,22 +40,20 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 public class JMHSample_01_HelloWorld {
 
     /**
-     * <p>
      * 仅需在方法上标注 @Benchmark ，JMH 就会自动生成相应的代码。
      * 被 @Benchmark 标注的方法就是要测试的内容。
      * 无需关心它底层是怎样运行的。
-     * </p><p>
+     * <p>
      * 阅读 {@link Benchmark} 源码获取完整的语义和限制。
      * 方法的名字不重要，只要加上 @Benchmark 注解就行。
      * 一个类中可以有多个标注为 @Benchmark 的方法。
-     * </p><p>
+     * <p>
      * 如果 Benchmark 方法死循环，JMH 也会一直运行。
      * 如果方法抛出了异常，JMH 会中断当前测试，继续进行下一个。
-     * </p><p>
+     * <p>
      * 空的方法可以看出 JMH 本身的开销。没有不产生开销的神奇框架。
      * 重要的是知道基准测试本身会产生开销。
      * baseline 测试中会进一步展开。
-     * </p>
      */
     @Benchmark
     public void wellHelloThere() {
@@ -63,16 +61,11 @@ public class JMHSample_01_HelloWorld {
     }
 
     /**
-     * <p>
      * 运行后会重复执行多次，每秒的执行的次数可以估计方法的开销。
-     * </p><p>
-     * 通过命令行运行：
      * <p>
-     *    $ mvn clean install
-     * </p><p>
-     *    $ java -jar target/benchmarks.jar JMHSample_01
-     * </p>
-     * </p>
+     * 通过命令行运行：
+     * $ mvn clean install
+     * $ java -jar target/benchmarks.jar JMHSample_01
      */
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
