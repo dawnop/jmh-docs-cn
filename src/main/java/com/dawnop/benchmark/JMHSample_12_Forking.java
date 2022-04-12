@@ -8,24 +8,24 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * JVM 擅长于 profile 导向的优化，通过分析改进程序的运行时性能。
+ * 这对于基准测试来说是个坏消息，因为不同的测试一起运行会干扰 JVM 的分析结果。
+ * Forking（在不同的进程中运行）可以规避这个问题。
+ * <p>
+ * JMH 默认会进行 fork。
+ */
+
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class JMHSample_12_Forking {
 
-    /*
-     * JVMs are notoriously good at profile-guided optimizations. This is bad
-     * for benchmarks, because different tests can mix their profiles together,
-     * and then render the "uniformly bad" code for every test. Forking (running
-     * in a separate process) each test can help to evade this issue.
-     *
-     * JMH will fork the tests by default.
-     */
 
-    /*
-     * Suppose we have this simple counter interface, and two implementations.
-     * Even though those are semantically the same, from the JVM standpoint,
-     * those are distinct classes.
+    /**
+     * 这里有一个简单的计数器接口和两个实现。
+     * 即使这两个实现一模一样，但是对于 JVM 来说这是两个完全不同的类。
+     * 这里就是想测试混淆 JVM 的分析结果会有什么问题。
      */
 
     public interface Counter {
@@ -50,9 +50,9 @@ public class JMHSample_12_Forking {
         }
     }
 
-    /*
-     * And this is how we measure it.
-     * Note this is susceptible for same issue with loops we mention in previous examples.
+    /**
+     * {@link JMHSample_11_Loops} 这个例子中的提到的循环优化，
+     * 这里同样会碰到这样的问题。
      */
 
     public int measure(Counter c) {
@@ -64,14 +64,13 @@ public class JMHSample_12_Forking {
     }
 
     /*
-     * These are two counters.
+     * 两个计数器的实例。
      */
     Counter c1 = new Counter1();
     Counter c2 = new Counter2();
 
-    /*
-     * We first measure the Counter1 alone...
-     * Fork(0) helps to run in the same JVM.
+    /**
+     * 先单独测试 Counter1，@Fork(0) 会让测试运行在同一个 JVM 中。
      */
 
     @Benchmark
@@ -80,8 +79,8 @@ public class JMHSample_12_Forking {
         return measure(c1);
     }
 
-    /*
-     * Then Counter2...
+    /**
+     * 然后是 Counter2。
      */
 
     @Benchmark
@@ -91,7 +90,7 @@ public class JMHSample_12_Forking {
     }
 
     /*
-     * Then Counter1 again...
+     * 然后继续再测试 Counter1。
      */
 
     @Benchmark
@@ -101,13 +100,13 @@ public class JMHSample_12_Forking {
     }
 
     /*
-     * These two tests have explicit @Fork annotation.
-     * JMH takes this annotation as the request to run the test in the forked JVM.
-     * It's even simpler to force this behavior for all the tests via the command
-     * line option "-f". The forking is default, but we still use the annotation
-     * for the consistency.
-     *
-     * This is the test for Counter1.
+     * 这两个测试显式地使用了 @Fork 注解。JMH 会把这个注解作为在 forked JVM 中运行测试的请求。
+     * 其实在命令行中添加参数 "-f" 可以很容易地强制进行 fork。
+     * fork 是默认开启的，但是我们为了统一上面的代码，仍然使用了这个注解。
+     */
+
+    /**
+     * fork 状态下测试 Counter1。
      */
 
     @Benchmark
@@ -116,8 +115,8 @@ public class JMHSample_12_Forking {
         return measure(c1);
     }
 
-    /*
-     * ...and this is the test for Counter2.
+    /**
+     * fork 状态下测试 Counter2。
      */
 
     @Benchmark
@@ -126,22 +125,10 @@ public class JMHSample_12_Forking {
         return measure(c2);
     }
 
-    /*
-     * ============================== HOW TO RUN THIS TEST: ====================================
-     *
-     * Note that C1 is faster, C2 is slower, but the C1 is slow again! This is because
-     * the profiles for C1 and C2 had merged together. Notice how flawless the measurement
-     * is for forked runs.
-     *
-     * You can run this test:
-     *
-     * a) Via the command line:
-     *    $ mvn clean install
-     *    $ java -jar target/benchmarks.jar JMHSample_12
-     *
-     * b) Via the Java API:
-     *    (see the JMH homepage for possible caveats when running from IDE:
-     *      http://openjdk.java.net/projects/code-tools/jmh/)
+    /**
+     * C1 运行地很快，C2 比 C1 慢，C1 again 又比 C2 慢！
+     * 这是因为 JVM 的分析结果混淆在了一起。
+     * 而 fork 就没有这样的问题。
      */
 
     public static void main(String[] args) throws RunnerException {
