@@ -39,7 +39,7 @@ public class JMHSample_13_RunToRun {
     }
 
     /*
-     * 现在运行不同的次数。
+     * 运行不同的次数。
      */
 
     @Benchmark
