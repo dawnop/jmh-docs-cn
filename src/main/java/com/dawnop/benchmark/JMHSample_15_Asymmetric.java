@@ -56,6 +56,11 @@ public class JMHSample_15_Asymmetric {
         return counter.get();
     }
 
+
+    /**
+     * 将会分别获取 inc() 和 get() 的性能指标。
+     */
+
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
                 .include(JMHSample_15_Asymmetric.class.getSimpleName())
