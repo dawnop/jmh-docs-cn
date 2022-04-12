@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * 如果需要返回多个计算结果，需要考虑如下两个选择。
- * <p>
  * 如果只产生一个结果，隐式返回更具有可读性。如 {@link JMHSample_08_DeadCode}。
  * 但是不要因为隐式返回使得基准测试代码不具有可读性。
+ * <p>
+ * 如果需要返回多个计算结果，需要考虑如下两个选择。
  */
 
 @BenchmarkMode(Mode.AverageTime)
