@@ -170,10 +170,17 @@ public class JMHSample_22_FalseSharing {
     }
 
     /**
-     * 测试 4: @Contended (仅支持JDK 1.8):
+     * 测试 4: @Contended
+     * 这个注解告诉 JVM 需要填充这个变量的周围以防 cache line 共享。
      * <p>
      * JDK 1.8 可以在字段上加上 @sun.misc.Contended。
      * 记得添加 JVM 参数 -XX:-RestrictContended 来开启。
+     * <p>
+     * JDK 1.9 引入了 JPMS (Java Platform Module System)，
+     * 包结构有了很大的变化。此时 @Contended 注解位于：<br>
+     * import jdk.internal.vm.annotation.Contended; <br>
+     * 并且需要添加 JVM 参数，将 unnamed module 暴露出来。<br>
+     * --add-exports java.base/jdk.internal.vm.annotation=ALL-UNNAMED <br>
      */
 
     @State(Scope.Group)
