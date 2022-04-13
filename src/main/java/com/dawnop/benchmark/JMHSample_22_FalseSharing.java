@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * cache line 共享机制是一件让人伤脑筋的事情。
+ * cache line 伪共享 (false sharing) 是一件让人伤脑筋的事情。
  * 如果两个线程访问（或者修改）相邻的内存地址，很有可能它们修改了同一个 cache line 上的数据。
  * 这可能导致明显的性能下降。
  * <p>
