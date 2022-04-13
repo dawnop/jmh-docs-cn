@@ -187,7 +187,7 @@ public class JMHSample_22_FalseSharing {
     public static class StateContended {
         int readOnly;
 
-//        @sun.misc.Contended
+        //        @sun.misc.Contended
         int writeOnly;
     }
 
