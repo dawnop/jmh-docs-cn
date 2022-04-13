@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 在有些特殊的情况下，你已经有了当前代码的测试结果，
  * 但你需要获取粒度更小的 throughput/time 指标，
- * 即把当前代码的测试结果当作基准获取更小粒度的指标。
+ * 即把当前代码的测试结果当作基准，获取更小粒度的指标。
  * <p>
  * 为了满足这种状况，JMH 提供了一种特殊的注解，{@link AuxCounters}。
  * 这种注解需要加在 {@link State} 上，作用是把 @State 对象当作计数器。
