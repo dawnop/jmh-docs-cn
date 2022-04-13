@@ -45,7 +45,7 @@ public class JMHSample_23_AuxCounters {
     }
 
     /**
-     * 这段代码用两个分支模拟测量不同的指标。
+     * 这段代码用两个分支，模拟测量不同的指标。
      * 被 @AuxCounters 标记的 @State 对象拥有用户控制的计数器，
      * JMH 会将它们的值作为性能分析的指标。
      */
