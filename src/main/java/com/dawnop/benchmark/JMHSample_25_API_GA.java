@@ -19,9 +19,6 @@ import java.util.List;
 /**
  * 这是一些看起来很复杂但很有意思的例子，看看如何在复杂的业务场景下使用 JMH。
  * 到目前为止，我们还没有定制化展示运行结果，很没意思。
- * This example shows the rather convoluted, but fun way to exploit
- * JMH API in complex scenarios. Up to this point, we haven't consumed
- * the results programmatically, and hence we are missing all the fun.
  */
 @State(Scope.Thread)
 public class JMHSample_25_API_GA {
