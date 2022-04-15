@@ -33,7 +33,7 @@ public class JMHSample_18_Control {
     @Group("pingpong")
     public void ping(Control cnt) {
         while (!cnt.stopMeasurement && !flag.compareAndSet(false, true)) {
-            // this body is intentionally left blank
+            // 刻意留白
         }
     }
 
@@ -41,7 +41,7 @@ public class JMHSample_18_Control {
     @Group("pingpong")
     public void pong(Control cnt) {
         while (!cnt.stopMeasurement && !flag.compareAndSet(true, false)) {
-            // this body is intentionally left blank
+            // 刻意留白
         }
     }
 
