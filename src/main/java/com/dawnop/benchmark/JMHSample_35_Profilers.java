@@ -453,7 +453,7 @@ public class JMHSample_35_Profilers {
                  96.03%   95.10%  <total for region 1>
 
             perfasm 还会打印最热的方法，以显示是否执行了基准测试。
-            大多是时候，它也可以分解虚拟机和内核变量（kernel symbols）。
+            大多数时候，它也可以分解虚拟机和内核变量（kernel symbols）。
 
                 ....[Hottest Methods (after inlining)]..............................................................
                  96.03%   95.10%  org.openjdk.jmh.samples.generated.JMHSample_35_Profilers_Atomic_test::test_avgt_jmhStub
