@@ -12,19 +12,19 @@ public class JMHSample_05_StateFixtures {
     double x;
 
     /**
+     * Setup 默认每个 @Benchmark 前执行
+     * TearDown 默认每个 @Benchmark 后执行
+     * <p>
      * {@link State} 对象一直存在于基准测试的整个生命周期中，这有助于进行状态管理。
      * 有种东西叫 fixture 方法，你可能在 JUnit 和 TestNG 中见过它。
      * <p>
      * Fixture 方法只在 State 对象中生效，在其他地方编译会报错。
      * <p>
      * 与 State 一样，fixture 方法仅仅在访问状态的线程中被调用。
-     * 这意味着你可以在 thread-local 环境中做点事情、进行同步，就像在基准测试线程中一样。
+     * 基准测试线程在访问状态时会执行对应的 fixture 方法。
      * <p>
      * fixture 方法同样可以在静态字段上生效，尽管这种行为脱离了状态管理。
      * 这种情况下遵循基本的 Java 语义（意味着同一个类的所有实例共享静态字段）
-     * <p>
-     * Setup 默认每个 @Benchmark 前执行
-     * TearDown 默认每个 @Benchmark 后执行
      */
 
     @Setup
