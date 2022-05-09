@@ -50,7 +50,7 @@ public class JMHSample_25_API_GA {
      * 不如构建一个入门级别的遗传算法、并且通过方法内联找到更好的优化方法。
      * <p>
      * 如果你还不了解遗传算法的概念，可以尝试先看看 wiki：
-     * http://en.wikipedia.org/wiki/Genetic_algorithm
+     * <a href="http://en.wikipedia.org/wiki/Genetic_algorithm">http://en.wikipedia.org/wiki/Genetic_algorithm</a>
      * <p>
      * 虚拟机大佬们能猜出哪个选项能获得最好的性能。
      * 跑一跑这个例子看看是否改进了性能。
