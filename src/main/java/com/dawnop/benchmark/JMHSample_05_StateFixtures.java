@@ -14,6 +14,7 @@ public class JMHSample_05_StateFixtures {
     /**
      * Setup 默认每个 @Benchmark 前执行
      * TearDown 默认每个 @Benchmark 后执行
+     * Setup 和 TearDown 称之为 fixture 方法。
      * <p>
      * {@link State} 对象一直存在于基准测试的整个生命周期中，这有助于进行状态管理。
      * 有种东西叫 fixture 方法，你可能在 JUnit 和 TestNG 中见过它。
